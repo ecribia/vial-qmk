@@ -141,6 +141,19 @@ bool is_flow_tap_key(uint16_t keycode) {
     return false;
 }
 
+bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t* tap_hold_record,
+                      uint16_t other_keycode, keyrecord_t* other_record) {
+    // Disable Chordal Hold for these keys
+    switch (tap_hold_keycode) {
+        case LT(2, KC_SPC):
+        case LSFT_T(KC_BSPC):
+            return false;  // Always settle as tapped, never hold
+    }
+
+    // For all other keys, use the default opposite hands rule
+    return get_chordal_hold_default(tap_hold_record, other_record);
+}
+
 #ifdef OLED_ENABLE
 #include <stdio.h>
 
